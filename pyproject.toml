@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "spc-monitoring"
+version = "0.1.0"
+description = "Statistical Process Control monitoring engine"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [ 
+    {name = "Jorge Luis Merlo Mejia"}
+]
+dependencies = [
+  "numpy>=1.24",
+  "scipy>=1.10",
+  "pandas>=2.0",
+  "matplotlib>=3.7"
+]
+
+[project.optional-dependencies]
+notebooks = [
+  "jupyter>=1.0",
+  "ipykernel>=6.0"
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
