@@ -1,16 +1,147 @@
-# Environments
-.venv/
+# ================================
+# CPG Analytics .gitignore
+# ================================
+# Optimizado para data science + consultoria
+# Solo lo esencial para danone-cross-cpg-analytics
 
-# Python cache
+# ================================
+# PYTHON CORE - SIEMPRE NECESARIO
+# ================================
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+*.so
 
-# Data (local)
-data/
+# ================================
+# LIBRERÍA cpg-analytics
+# ================================
+build/
+dist/
+*.egg-info/
+.installed.cfg
+*.egg
 
-# VS Code
-.vscode/
+# ================================
+# ENVIRONMENTS - CRÍTICO
+# ================================
+.env
+.env.*
+.venv
+venv/
+ENV/
 
-# OS
+# ================================
+# JUPYTER
+# ================================
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+profile_default/
+
+# ================================
+# TESTING
+# ================================
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ================================
+# DOCS
+# ================================
+docs/_build/
+docs/build/
+
+# ================================
+# DATA FILES
+# ================================
+# Bloquear archivos grandes por defecto
+*.csv
+*.xlsx
+*.parquet
+*.pickle
+*.pkl
+
+# Permitir archivos pequeños/críticos usando !
+!data_standards/schemas/*.json
+!data_standards/business_rules/*.yaml
+!tests/fixtures/*
+!configs/*.yaml
+!configs/*.json
+
+# Temporales por patrón
+temp_*
+*_temp.*
+*_backup.*
+*_draft.*
+
+# ================================
+# WORKSPACES
+# ================================
+# Basado en workspaces/user_name/
+
+# Temporales y caches
+workspaces/*/temp/
+workspaces/*/.cache/
+workspaces/*/.backups/
+
+# Archivos grandes en workspaces
+workspaces/*/**/*.csv
+workspaces/*/**/*.xlsx
+workspaces/*/**/*.parquet
+workspaces/*/**/*.pickle
+
+# Permitir código y notebooks
+!workspaces/*/**/*.py
+!workspaces/*/**/*.md
+!workspaces/*/**/*.ipynb
+!workspaces/*/shared/**/*
+
+# Outputs de reportes
+workspaces/*/reports/*.pdf
+workspaces/*/reports/*.pptx
+
+# ================================
+# ML & DATA SCIENCE
+# ================================
+*.model
+*.h5
+*.pt
+*.pth
+checkpoints/
+mlruns/
+.mlflow/
+wandb/
+
+# ================================
+# AWS & SECRETS - CRÍTICO
+# ================================
+.aws/credentials
+.aws/config
+*.pem
+*.key
+secrets.yaml
+.secrets
+credentials.json
+local_config.yaml
+
+# ================================
+# OUTPUTS & TEMPORALES
+# ================================
+temp/
+*.log
+logs/
+
+# ================================
+# OS & IDE
+# ================================
 .DS_Store
 Thumbs.db
+.vscode/settings.json
+.idea/
+*.swp
+
+# ================================
+# PROJECT SPECIFIC
+# ================================
+.data_registry_cache/
+pipelines/temp/
+scripts/temp/
