@@ -7,51 +7,79 @@ Incluye un flujo claro de **Phase I (construcción/calibración)** y **Phase II 
 
 ## Instalación (desde GitHub)
 
-```bash
-pip install git+https://github.com/<TU_USUARIO>/<TU_REPO>.git@v0.1.0
+    pip install git+https://github.com/<TU_USUARIO>/<TU_REPO>.git@v0.1.0
 
+> Recomendación: instalar con un tag (`@v0.1.0`) para fijar una versión estable.
 
-Quickstart
-Phase I — Construir carta y calibrar límites
-import pandas as pd
-from spc_monitor import qcc
+---
 
-df_ref = pd.read_csv("reference.csv")
-feature_cols = ["x1", "x2", "x3"]
+## Quickstart
 
-chart = qcc(
-    df_ref,
-    chart="mw_location",
-    feature_cols=feature_cols,
-    limits="calibrate",
-    calibrate="arl0",
-    target_arl0=200,
-    iters=10000,
-    seed=123,
-)
+### Phase I — Construir carta y calibrar límites
 
-print(chart.summary())
-chart.plot(reference=True)
-Phase II — Monitorear nuevos datos (batch)
-import pandas as pd
+    import pandas as pd
+    from spc_monitor import qcc
 
-df_new = pd.read_csv("stream.csv")
-res = chart.monitor(df_new, feature_cols=["x1", "x2", "x3"])
+    df_ref = pd.read_csv("reference.csv")
+    feature_cols = ["x1", "x2", "x3"]
 
-print(res.summary())
-print("Primeras alarmas en:", res.violations_idx[:10])
+    chart = qcc(
+        df_ref,
+        chart="mw_location",
+        feature_cols=feature_cols,
+        limits="calibrate",
+        calibrate="arl0",
+        target_arl0=200,
+        iters=10000,
+        seed=123,
+    )
 
-res.plot()
-Guardar y cargar el chart (recomendado para producción)
+    print(chart.summary())
+    chart.plot(reference=True)
+
+### Phase II — Monitorear nuevos datos (batch)
+
+    import pandas as pd
+
+    df_new = pd.read_csv("stream.csv")
+    res = chart.monitor(df_new, feature_cols=["x1", "x2", "x3"])
+
+    print(res.summary())
+    print("Primeras alarmas en:", res.violations_idx[:10])
+
+    res.plot()
+
+---
+
+## Guardar y cargar el chart (recomendado para producción)
 
 Phase I (una vez):
 
-chart.save("artifacts/mw_location_chart.joblib")
+    chart.save("artifacts/mw_location_chart.joblib")
 
 Operación diaria (Phase II):
 
-from spc_monitor import MWLocationChart
+    from spc_monitor import MWLocationChart
 
-chart = MWLocationChart.load("artifacts/mw_location_chart.joblib")
-res = chart.monitor(df_new, feature_cols=["x1","x2","x3"])
-print("Alarmas:", res.violations.sum())
+    chart = MWLocationChart.load("artifacts/mw_location_chart.joblib")
+    res = chart.monitor(df_new, feature_cols=["x1","x2","x3"])
+    print("Alarmas:", res.violations.sum())
+
+---
+
+## Estructura del proyecto (MVP)
+
+    src/spc_monitor/
+      api.py                    # wrapper opcional (entrada unificada)
+      charts/mw_location.py      # carta MW (fit/monitor)
+      objects/limits.py          # Limits (lcl/ucl/cl + meta)
+      objects/result.py          # QCCResult (stats/violations/summary/plot)
+      limits/calibration.py      # calibración de límites
+      sim/rl.py                  # simulación run length
+      plotting/matplotlib.py     # gráficos
+      utils/validation.py        # validación de inputs
+
+---
+
+## Licencia
+Ver `LICENSE`.
